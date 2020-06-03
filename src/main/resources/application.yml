@@ -1,0 +1,67 @@
+# Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  port: 9999
+  servlet:
+    context-path: /
+
+#debug: true
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+  kafka:
+    bootstrap-servers: 172.18.0.46:9092,172.18.0.47:9092,172.18.0.48:9092
+    consumer:
+      auto-offset-reset: latest
+      enable-auto-commit: true
+      group-id: screen-control
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+
+  rabbitmq:
+    host: 47.244.107.125
+    port: 5672
+    username: guest
+    password: guest
+    #消息确认配置项
+    #确认消息已发送到交换机(Exchange)
+    publisher-confirms: true
+    #确认消息已发送到队列(Queue)
+    publisher-returns: true
+
+elasticsearch:
+  user:
+  password:
+  host: hanyukun.cn
+  port: 9200
+memcache:
+  servers: 127.0.0.1:11211
+  failover: true
+  initConn: 10
+  minConn: 2
+  maxConn: 1000
+  maintSleep: 50
+  nagle: false
+  socketTO: 3000
+  aliveCheck: true
+
+
+
+
+
+
