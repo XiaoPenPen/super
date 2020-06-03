@@ -140,6 +140,12 @@
 			<artifactId>jsch</artifactId>
 			<version>0.1.54</version>
 		</dependency>
+		<!--cglib-->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.2.6</version>
+		</dependency>
 
 	</dependencies>
 
