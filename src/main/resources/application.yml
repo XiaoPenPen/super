@@ -32,6 +32,7 @@ spring:
     host: 127.0.0.1
     port: 6379
     password:
+    database: 0
 
   rabbitmq:
     host: 47.244.107.125
@@ -43,6 +44,10 @@ spring:
     publisher-confirms: true
     #确认消息已发送到队列(Queue)
     publisher-returns: true
+#mybatis-plus配置控制台打印完整带参数SQL语句
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 elasticsearch:
   user:

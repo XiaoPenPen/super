@@ -17,7 +17,9 @@ public class TestController {
 
     @RequestMapping("/thread")
     public Result test(){
-        testService.test(2);
+        for (int i = 0; i < 10; i++) {
+            testService.test(i);
+        }
         return Result.init();
     }
 }

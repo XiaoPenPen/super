@@ -1,10 +1,9 @@
-package com.example.demo.entity;
+package com.example.demo.user.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,5 +17,7 @@ public class User implements Serializable{
     private Integer id;
 
     private String name;
-
+    // 版本号，用于实现乐观锁,数据库中也增加相应的version字段
+    @Version // 这个注解是关键
+    private Integer version;
 }

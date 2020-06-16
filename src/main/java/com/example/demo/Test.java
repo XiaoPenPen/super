@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.entity.User;
+import com.example.demo.user.entity.User;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;

@@ -6,4 +6,6 @@ package com.example.demo.thread.service;
 public interface TestService {
 
     void test(Integer integer);
+
+    void test2(Integer integer);
 }

@@ -19,8 +19,6 @@
 		<lombok.version>1.16.22</lombok.version>
 		<hutool.version>4.6.1</hutool.version>
 		<mybatis.plus.starter.version>3.1.2</mybatis.plus.starter.version>
-		<mybatis.plus.version>3.3.0</mybatis.plus.version>
-		<mybatis.plus.annotation.version>RELEASE</mybatis.plus.annotation.version>
 		<mysql.version>5.1.21</mysql.version>
 		<generator.version>3.3.0</generator.version>
 		<jsoup.version>1.12.1</jsoup.version>
@@ -28,6 +26,17 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.github.flying-cattle</groupId>
+			<artifactId>mybatis-dsc-generator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.flying-cattle</groupId>
+			<artifactId>mybatis-dsc-generator</artifactId>
+			<version>3.0.6.RELEASE</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -37,31 +46,6 @@
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-boot-starter</artifactId>
 			<version>${mybatis.plus.starter.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus</artifactId>
-			<version>${mybatis.plus.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-annotation</artifactId>
-			<version>${mybatis.plus.annotation.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-annotation</artifactId>
-			<version>${mybatis.plus.annotation.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-annotation</artifactId>
-			<version>${mybatis.plus.annotation.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-annotation</artifactId>
-			<version>${mybatis.plus.annotation.version}</version>
 		</dependency>
 		<!--引入AOP依赖-->
 		<dependency>
