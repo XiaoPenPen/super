@@ -25,6 +25,13 @@
 		<es.version>7.2.0</es.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>cloudera</id>
+			<url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 
 		<dependency>
@@ -129,6 +136,12 @@
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 			<version>3.2.6</version>
+		</dependency>
+		<!-- HBase -->
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-client</artifactId>
+			<version>1.2.0-cdh5.14.4</version>
 		</dependency>
 
 	</dependencies>

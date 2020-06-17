@@ -49,6 +49,14 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+hbase:
+  zookeeper:
+    # hbase 连接的zookeeper集群，如果集群是使用域名做了映射，需要在本程序所在服务器配置该映射关系
+    quorum: 172.18.0.46,172.18.0.47,172.18.0.48
+    property:
+      # habse 连接的zookeeper集群用的端口
+      clientPort: 2181
+
 elasticsearch:
   user:
   password:
