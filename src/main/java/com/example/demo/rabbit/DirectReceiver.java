@@ -3,9 +3,7 @@ package com.example.demo.rabbit;
 
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
-import org.springframework.stereotype.Component;
+import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
 
 import java.util.HashMap;
 import java.util.Map;

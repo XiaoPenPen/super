@@ -22,7 +22,7 @@ public class SendMessageController {
     @GetMapping("/sendDirectMessage")
     public String sendDirectMessage() {
         String messageId = String.valueOf(UUID.randomUUID());
-        String messageData = "test message, hello!";
+        String messageData = "Test message, hello!";
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Map<String,Object> map=new HashMap<>();
         map.put("messageId",messageId);
@@ -74,7 +74,7 @@ public class SendMessageController {
     @GetMapping("/TestMessageAck")
     public String TestMessageAck() {
         String messageId = String.valueOf(UUID.randomUUID());
-        String messageData = "message: non-existent-exchange test message ";
+        String messageData = "message: non-existent-exchange Test message ";
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Map<String, Object> map = new HashMap<>();
         map.put("messageId", messageId);
@@ -87,7 +87,7 @@ public class SendMessageController {
     @GetMapping("/TestMessageAck2")
     public String TestMessageAck2() {
         String messageId = String.valueOf(UUID.randomUUID());
-        String messageData = "message: lonelyDirectExchange test message ";
+        String messageData = "message: lonelyDirectExchange Test message ";
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Map<String, Object> map = new HashMap<>();
         map.put("messageId", messageId);
