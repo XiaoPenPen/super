@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public class DemoController {
     @Autowired
     private IUserService userService;
+    public static String test = "1";
 
-    @PutMapping("/user")
-    public R insert(@RequestBody User user){
-        userService.save(user);
-        return R.ok(user);
+    @RequestMapping("/user")
+    public R insert(@RequestParam String s){
+        test = s;
+        return R.ok(test);
     }
 
     @DeleteMapping("/user/{id}")

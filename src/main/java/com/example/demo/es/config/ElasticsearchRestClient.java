@@ -1,3 +1,4 @@
+/*
 package com.example.demo.es.config;
 
 import lombok.extern.slf4j.Slf4j;
@@ -7,10 +8,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.reactor.IOReactorConfig;
-import org.elasticsearch.client.Node;
-import org.elasticsearch.client.NodeSelector;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +26,8 @@ public class ElasticsearchRestClient {
     @Value("${elasticsearch.port}")
     private Integer port;
 
-    @Bean(name = "myClient")
-    public RestClient getRestClient() {
+    @Bean(name = "myEs")
+    public RestHighLevelClient getRestClient() {
         //基本的连接
         RestClientBuilder clientBuilder = RestClient.builder(new HttpHost(host, port));
         //配置身份验证
@@ -54,8 +52,8 @@ public class ElasticsearchRestClient {
             }
         });
 
-        return clientBuilder.build();
+        return new RestHighLevelClient(clientBuilder);
     }
 
 
-}
+}*/

@@ -10,23 +10,50 @@ server:
 
 #debug: true
 spring:
+  main:
+    allow-bean-definition-overriding: true
+# 移除自动配置类
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  # Oracle 数据库
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/demo?characterEncoding=utf-8&useSSL=false
-    username: root
-    password: root
+    dynamic:
+      datasource:
+        # ****************************** mysql ******************************
+        # MySQL数据库配置
+        master:
+          driver-class-name: com.mysql.jdbc.Driver #
+          url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+          username: root
+          password: root
+        slave:
+          driver-class-name: com.mysql.jdbc.Driver #
+          url: jdbc:mysql://172.18.100.2:3306/nsrep_screen_control-2?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+          username: root
+          password: mysql
+
   kafka:
-    bootstrap-servers: 172.18.0.46:9092,172.18.0.47:9092,172.18.0.48:9092
-    consumer:
-      auto-offset-reset: latest
-      enable-auto-commit: true
-      group-id: screen-control
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    one:
+      bootstrap-servers: 10.9.1.199:9092 #172.20.1.21:9092
+      listener:
+        missing-topics-fatal: false
+      consumer:
+        auto-offset-reset: latest
+        enable-auto-commit: true
+        group-id: screen-control-local
+    two:
+      bootstrap-servers: vm1p22.site.local:9092
+      listener:
+        missing-topics-fatal: false
+      consumer:
+        auto-offset-reset: latest
+        enable-auto-commit: true
+        group-id: screen-control-local
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+    default-property-inclusion: NON_NULL
 
   redis:
     host: 127.0.0.1
@@ -49,6 +76,10 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+arthas:
+  agent-id: hsehdfsfghhwertyfad
+  tunnel-server: ws://47.244.107.125:7777/ws
+
 hbase:
   zookeeper:
     # hbase 连接的zookeeper集群，如果集群是使用域名做了映射，需要在本程序所在服务器配置该映射关系
@@ -57,11 +88,16 @@ hbase:
       # habse 连接的zookeeper集群用的端口
       clientPort: 2181
 
+hdfs:
+  path: hdfs://172.18.1.51:8020
+  username: hdfs
+
 elasticsearch:
   user:
   password:
-  host: hanyukun.cn
+  host: 39.105.24.221
   port: 9200
+
 memcache:
   servers: 127.0.0.1:11211
   failover: true

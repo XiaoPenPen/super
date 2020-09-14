@@ -23,6 +23,8 @@
 		<generator.version>3.3.0</generator.version>
 		<jsoup.version>1.12.1</jsoup.version>
 		<es.version>7.2.0</es.version>
+		<dynamic-datasource.vesion>3.1.1</dynamic-datasource.vesion>
+		<arthas.version>3.3.9</arthas.version>
 	</properties>
 
 	<repositories>
@@ -137,13 +139,75 @@
 			<artifactId>cglib</artifactId>
 			<version>3.2.6</version>
 		</dependency>
-		<!-- HBase -->
+		<!--swagger-->
 		<dependency>
-			<groupId>org.apache.hbase</groupId>
-			<artifactId>hbase-client</artifactId>
-			<version>1.2.0-cdh5.14.4</version>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.7.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.7.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+        <!-- Spring security -->
+<!--        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>-->
+		<!---->
+		<!-- mybatis-plus 多数据源 -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+			<version>${dynamic-datasource.vesion}</version>
+		</dependency>
+		<!-- hadoop hdfs -->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-hdfs</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<!--arthas-->
+		<dependency>
+			<groupId>com.taobao.arthas</groupId>
+			<artifactId>arthas-spring-boot-starter</artifactId>
+			<version>${arthas.version}</version>
+		</dependency>
+		<!--heetian 依赖-->
+		<dependency>
+			<groupId>com.heetian</groupId>
+			<artifactId>nsrep-util</artifactId>
+			<version>1.0.8</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 	<build>

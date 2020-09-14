@@ -1,12 +1,6 @@
 package com.example.demo.rabbit.config;
 
 
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 /** 自动确认回调配置
  * @author admin
  */
