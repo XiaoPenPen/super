@@ -17,8 +17,22 @@ public class EsController {
     private ESUtil esUtil;
 
     @ApiOperation("创建索引")
-    @PutMapping("/create/index")
+    @PutMapping("/index")
     public R createIndex(@RequestBody String createJson, @RequestParam String indexName) throws Exception {
         return R.ok(esUtil.createIndex(createJson, indexName, 3, 2));
     }
+
+    @ApiOperation("删除索引")
+    @DeleteMapping("/index")
+    public R deleteIndex(@RequestParam String indexName) {
+        esUtil.deleteIndex(indexName);
+        return R.ok("删除成功");
+    }
+
+    @ApiOperation("新增或修改一条记录")
+    @PostMapping("/doc")
+    public R insertDoc(@RequestParam String indexName, @RequestParam String id, @RequestBody String data) {
+        return R.ok(esUtil.insertOrUpdateOne(indexName, id, data));
+    }
+
 }

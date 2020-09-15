@@ -1,5 +1,6 @@
 package com.example.demo.es.config;
 
+import cn.hutool.json.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -7,6 +8,10 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.reactor.IOReactorConfig;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.*;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
@@ -17,6 +22,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author xuchunpeng 2020/9/14
@@ -25,7 +32,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class ESUtil {
 
-    public static RestHighLevelClient client = null;
+    private static RestHighLevelClient client = null;
 
     @Value("${elasticsearch.user}")
     private String userName;
@@ -72,16 +79,17 @@ public class ESUtil {
      * Description: 判断某个index是否存在
      *
      * @param index index名
-     * @return boolean
-     * @author fanxb
-     * @date 2019/7/24 14:57
      */
-    public boolean indexExist(String index) throws Exception {
-        GetIndexRequest request = new GetIndexRequest(index);
-        request.local(false);
-        request.humanReadable(true);
-        request.includeDefaults(false);
-        return client.indices().exists(request, RequestOptions.DEFAULT);
+    public Boolean indexExist(String index) {
+        try {
+            GetIndexRequest request = new GetIndexRequest(index);
+            request.local(false);
+            request.humanReadable(true);
+            request.includeDefaults(false);
+            return client.indices().exists(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("判断某个index是否存在报错:" + e.getMessage(), e);
+        }
     }
 
     /**
@@ -90,17 +98,61 @@ public class ESUtil {
      * @param number_of_shards
      * @param number_of_replicas
      * @return
-     * @throws Exception
      */
-    public String createIndex(String createJson, String indexName, Integer number_of_shards, Integer number_of_replicas) throws Exception {
-        if (indexExist(indexName)){
-            return indexName + "已存在";
+    public String createIndex(String createJson, String indexName, Integer number_of_shards, Integer number_of_replicas) {
+        try {
+            if (indexExist(indexName)){
+                return indexName + "已存在";
+            }
+            CreateIndexRequest request = new CreateIndexRequest(indexName);
+            request.settings(Settings.builder().put("index.number_of_shards", number_of_shards).put("index.number_of_replicas", number_of_replicas));
+            request.mapping(createJson, XContentType.JSON);
+            CreateIndexResponse res = client.indices().create(request, RequestOptions.DEFAULT);
+            return res.index();
+        } catch (IOException e) {
+            throw new RuntimeException("判断某个index是否存在报错:" + e.getMessage(), e);
         }
-        CreateIndexRequest request = new CreateIndexRequest(indexName);
-        request.settings(Settings.builder().put("index.number_of_shards", number_of_shards).put("index.number_of_replicas", number_of_replicas));
-        request.mapping(createJson, XContentType.JSON);
-        CreateIndexResponse res = client.indices().create(request, RequestOptions.DEFAULT);
-        return res.index();
     }
+
+    /**
+     * Description: 删除index
+     */
+    public void deleteIndex(String index) {
+        try {
+            client.indices().delete(new DeleteIndexRequest(index), RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Description: 插入/更新一条记录
+     */
+    public String insertOrUpdateOne(String index, String id, String data) {
+        IndexRequest request = new IndexRequest(index);
+        request.id(id);
+        request.source(data, XContentType.JSON);
+        try {
+            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+            return response.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Description: 批量插入数据
+     */
+    public void insertBatch(String index, List<JSONObject> dataList) {
+        BulkRequest request = new BulkRequest();
+        dataList.forEach(item -> request.add(new IndexRequest(index).id(item.getStr("id"))
+                .source(item.getStr("data"), XContentType.JSON)));
+        try {
+            client.bulk(request, RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
