@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.example.demo.es.config.ESUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +35,12 @@ public class EsController {
     public R insertDoc(@RequestParam String indexName, @RequestParam String id, @RequestBody String data) {
         return R.ok(esUtil.insertOrUpdateOne(indexName, id, data));
     }
+
+    @ApiOperation("查询全部")
+    @GetMapping("/search/all")
+    public R searchAll(@RequestParam String indexName) {
+        return R.ok(esUtil.search(indexName, new SearchSourceBuilder(), Object.class));
+    }
+
 
 }
