@@ -4,7 +4,7 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 9999
+  port: 10001
   servlet:
     context-path: /
 
@@ -71,14 +71,41 @@ spring:
     publisher-confirms: true
     #确认消息已发送到队列(Queue)
     publisher-returns: true
+
+  quartz:
+    job-store-type: jdbc
+    initialize-schema: embedded
+    #设置自动启动，默认为 true
+    auto-startup: true
+    #启动时更新己存在的Job
+    overwrite-existing-jobs: true
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: MyScheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+            isClustered: true
+            misfireThreshold: 60000
+            clusterCheckinInterval: 10000
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+
 #mybatis-plus配置控制台打印完整带参数SQL语句
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-arthas:
-  agent-id: hsehdfsfghhwertyfad
-  tunnel-server: ws://47.244.107.125:7777/ws
+#arthas:
+ # agent-id: hsehdfsfghhwertyfad
+ # tunnel-server: ws://47.244.107.125:7777/ws
 
 hbase:
   zookeeper:
