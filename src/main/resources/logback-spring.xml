@@ -78,7 +78,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.heetian" level="INFO"/>
+    <logger name="com.example.demo" level="INFO"/>
     <logger name="com.alibaba.nacos" level="WARN"/>
 
     <!-- 日志输出级别 -->

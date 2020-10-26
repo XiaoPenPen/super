@@ -593,6 +593,22 @@ public class RedisUtil {
         return boundValueOperations.rightPop();
     }
 
+
+    /**
+     * 从 redis 中指定 key 对应的 list 中移除 n 个值为 value 的数据
+     *
+     * @param key   键，不能为null
+     * @return 移除的个数
+     */
+    public <T> Object leftPop(String key) {
+        try {
+            return this.redisTemplate.opsForList().leftPop(key, 20, TimeUnit.SECONDS);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return 0;
+        }
+    }
+
     //=========BoundListOperations 用法 End============
 
 }

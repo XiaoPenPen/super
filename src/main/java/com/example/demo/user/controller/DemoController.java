@@ -2,6 +2,7 @@ package com.example.demo.user.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.example.demo.common.Result;
+import com.example.demo.user.config.ApplicationObj;
 import com.example.demo.user.entity.User;
 import com.example.demo.user.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,12 @@ public class DemoController {
     public R insert(@RequestParam String s){
         test = s;
         return R.ok(test);
+    }
+
+    @RequestMapping("/asd")
+    public R awsed(){
+        System.out.println(ApplicationObj.class);
+        return R.ok(ApplicationObj.class);
     }
 
     @DeleteMapping("/user/{id}")

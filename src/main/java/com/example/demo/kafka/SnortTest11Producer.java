@@ -2,14 +2,18 @@ package com.example.demo.kafka;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONObject;
+import com.example.demo.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -19,12 +23,15 @@ import java.util.UUID;
  * @author xuchunpeng 2020/5/13
  */
 @Component
+@PropertySource({"classpath:properties/detection-task.properties"})
 public class SnortTest11Producer {
 
     @Autowired
     private KafkaTemplate kafkaOneTemplate;
     @Autowired
     private KafkaTemplate kafkaTwoTemplate;
+    @Autowired
+    private RedisUtil redisUtil;
     @Autowired
     private Environment environment;
     @Value("${server.tomcat.uri-encoding}")
@@ -33,10 +40,14 @@ public class SnortTest11Producer {
     public static List<String> targetNameMap = Arrays.asList("xcp-test-o1", "wsd-test-01");
     public static List<String> teamMap = Arrays.asList("xcp-test-o1", "wsd-test-01");
 
-    //@Scheduled(cron = "*/5 * * * * ?")
-    public void qadsadawa() {
-        System.out.println(environment.getProperty("test.name"));
-        System.out.println(value);
+    @Value("${DetectionTask.applyTokenIn.port}")
+    private Integer port;
+
+    @Scheduled(cron = "*/2 * * * * ?")
+    public void qadsadawa() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        System.out.println("进入时间"+DateUtil.now());
+        String test = (String) redisUtil.leftPop("test_1");
+        System.out.println(test+DateUtil.now());
     }
 
     //@Scheduled(cron = "*/5 * * * * ?")
