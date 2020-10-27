@@ -9,7 +9,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 
@@ -43,7 +42,7 @@ public class SnortTest11Producer {
     @Value("${DetectionTask.applyTokenIn.port}")
     private Integer port;
 
-    @Scheduled(cron = "*/2 * * * * ?")
+   // @Scheduled(cron = "*/2 * * * * ?")
     public void qadsadawa() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         System.out.println("进入时间"+DateUtil.now());
         String test = (String) redisUtil.leftPop("test_1");

@@ -34,13 +34,16 @@ spring:
 
   kafka:
     one:
-      bootstrap-servers: 10.9.1.199:9092 #172.20.1.21:9092
+      bootstrap-servers: 172.18.0.46:9092,172.18.0.47:9092,172.18.0.48:9092 # 10.9.1.199:9092
       listener:
         missing-topics-fatal: false
       consumer:
         auto-offset-reset: latest
         enable-auto-commit: true
         group-id: screen-control-local
+      producer:
+        max-request-size: 150000
+
     two:
       bootstrap-servers: vm1p22.site.local:9092
       listener:
