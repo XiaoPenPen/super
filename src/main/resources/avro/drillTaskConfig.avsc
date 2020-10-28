@@ -1,0 +1,13 @@
+{"namespace": "com.example.demo.avro",
+ "type": "record",
+ "name": "DrillTaskConfig",
+ "fields": [
+     {"name": "taskId", "type": "string"},
+     {"name": "projectId", "type": "string"},
+     {"name": "scenarioId", "type": "string"},
+     {"name": "date", "type": "string"},
+     {"name": "userID", "type": "string"},
+     {"name": "devices", "type": {"type":"array", "items" : {"name":"Device", "type":"record", "fields":[{"name": "vmId", "type": "string"}, {"name": "name", "type": "string"}, {"name": "address", "type": {"type": "map", "values": "string"}}]}}},
+     {"name": "links", "type": {"type":"array", "items":"string"}}
+     ]
+}
