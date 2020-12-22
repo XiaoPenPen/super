@@ -5,16 +5,16 @@
  */
 package com.example.demo.avro;
 
-import org.apache.avro.specific.SpecificData;
-import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.SchemaStore;
+import org.apache.avro.specific.SpecificData;
 
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Feedback extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 4654124770428341404L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Feedback\",\"namespace\":\"com.example.demo.avro\",\"fields\":[{\"name\":\"taskId\",\"type\":\"string\"},{\"name\":\"projectId\",\"type\":\"string\"},{\"name\":\"scenarioId\",\"type\":\"string\"},{\"name\":\"system_name\",\"type\":\"string\"},{\"name\":\"return_value\",\"type\":\"string\"},{\"name\":\"return_time\",\"type\":\"long\"}]}");
+  private static final long serialVersionUID = -1784076125135205767L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Feedback\",\"namespace\":\"com.example.demo.avro\",\"fields\":[{\"name\":\"taskId\",\"type\":\"string\"},{\"name\":\"projectId\",\"type\":\"string\"},{\"name\":\"scenarioId\",\"type\":\"string\"},{\"name\":\"data_category\",\"type\":\"string\"},{\"name\":\"return_value\",\"type\":\"string\"},{\"name\":\"return_time\",\"type\":\"long\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -54,7 +54,7 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
   @Deprecated public java.lang.CharSequence taskId;
   @Deprecated public java.lang.CharSequence projectId;
   @Deprecated public java.lang.CharSequence scenarioId;
-  @Deprecated public java.lang.CharSequence system_name;
+  @Deprecated public java.lang.CharSequence data_category;
   @Deprecated public java.lang.CharSequence return_value;
   @Deprecated public long return_time;
 
@@ -70,15 +70,15 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
    * @param taskId The new value for taskId
    * @param projectId The new value for projectId
    * @param scenarioId The new value for scenarioId
-   * @param system_name The new value for system_name
+   * @param data_category The new value for data_category
    * @param return_value The new value for return_value
    * @param return_time The new value for return_time
    */
-  public Feedback(java.lang.CharSequence taskId, java.lang.CharSequence projectId, java.lang.CharSequence scenarioId, java.lang.CharSequence system_name, java.lang.CharSequence return_value, java.lang.Long return_time) {
+  public Feedback(java.lang.CharSequence taskId, java.lang.CharSequence projectId, java.lang.CharSequence scenarioId, java.lang.CharSequence data_category, java.lang.CharSequence return_value, java.lang.Long return_time) {
     this.taskId = taskId;
     this.projectId = projectId;
     this.scenarioId = scenarioId;
-    this.system_name = system_name;
+    this.data_category = data_category;
     this.return_value = return_value;
     this.return_time = return_time;
   }
@@ -90,7 +90,7 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
     case 0: return taskId;
     case 1: return projectId;
     case 2: return scenarioId;
-    case 3: return system_name;
+    case 3: return data_category;
     case 4: return return_value;
     case 5: return return_time;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
@@ -104,7 +104,7 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
     case 0: taskId = (java.lang.CharSequence)value$; break;
     case 1: projectId = (java.lang.CharSequence)value$; break;
     case 2: scenarioId = (java.lang.CharSequence)value$; break;
-    case 3: system_name = (java.lang.CharSequence)value$; break;
+    case 3: data_category = (java.lang.CharSequence)value$; break;
     case 4: return_value = (java.lang.CharSequence)value$; break;
     case 5: return_time = (java.lang.Long)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
@@ -160,19 +160,19 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
   }
 
   /**
-   * Gets the value of the 'system_name' field.
-   * @return The value of the 'system_name' field.
+   * Gets the value of the 'data_category' field.
+   * @return The value of the 'data_category' field.
    */
-  public java.lang.CharSequence getSystemName() {
-    return system_name;
+  public java.lang.CharSequence getDataCategory() {
+    return data_category;
   }
 
   /**
-   * Sets the value of the 'system_name' field.
+   * Sets the value of the 'data_category' field.
    * @param value the value to set.
    */
-  public void setSystemName(java.lang.CharSequence value) {
-    this.system_name = value;
+  public void setDataCategory(java.lang.CharSequence value) {
+    this.data_category = value;
   }
 
   /**
@@ -242,7 +242,7 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
     private java.lang.CharSequence taskId;
     private java.lang.CharSequence projectId;
     private java.lang.CharSequence scenarioId;
-    private java.lang.CharSequence system_name;
+    private java.lang.CharSequence data_category;
     private java.lang.CharSequence return_value;
     private long return_time;
 
@@ -269,8 +269,8 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
         this.scenarioId = data().deepCopy(fields()[2].schema(), other.scenarioId);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.system_name)) {
-        this.system_name = data().deepCopy(fields()[3].schema(), other.system_name);
+      if (isValidValue(fields()[3], other.data_category)) {
+        this.data_category = data().deepCopy(fields()[3].schema(), other.data_category);
         fieldSetFlags()[3] = true;
       }
       if (isValidValue(fields()[4], other.return_value)) {
@@ -301,8 +301,8 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
         this.scenarioId = data().deepCopy(fields()[2].schema(), other.scenarioId);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.system_name)) {
-        this.system_name = data().deepCopy(fields()[3].schema(), other.system_name);
+      if (isValidValue(fields()[3], other.data_category)) {
+        this.data_category = data().deepCopy(fields()[3].schema(), other.data_category);
         fieldSetFlags()[3] = true;
       }
       if (isValidValue(fields()[4], other.return_value)) {
@@ -433,40 +433,40 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
     }
 
     /**
-      * Gets the value of the 'system_name' field.
+      * Gets the value of the 'data_category' field.
       * @return The value.
       */
-    public java.lang.CharSequence getSystemName() {
-      return system_name;
+    public java.lang.CharSequence getDataCategory() {
+      return data_category;
     }
 
     /**
-      * Sets the value of the 'system_name' field.
-      * @param value The value of 'system_name'.
+      * Sets the value of the 'data_category' field.
+      * @param value The value of 'data_category'.
       * @return This builder.
       */
-    public com.example.demo.avro.Feedback.Builder setSystemName(java.lang.CharSequence value) {
+    public com.example.demo.avro.Feedback.Builder setDataCategory(java.lang.CharSequence value) {
       validate(fields()[3], value);
-      this.system_name = value;
+      this.data_category = value;
       fieldSetFlags()[3] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'system_name' field has been set.
-      * @return True if the 'system_name' field has been set, false otherwise.
+      * Checks whether the 'data_category' field has been set.
+      * @return True if the 'data_category' field has been set, false otherwise.
       */
-    public boolean hasSystemName() {
+    public boolean hasDataCategory() {
       return fieldSetFlags()[3];
     }
 
 
     /**
-      * Clears the value of the 'system_name' field.
+      * Clears the value of the 'data_category' field.
       * @return This builder.
       */
-    public com.example.demo.avro.Feedback.Builder clearSystemName() {
-      system_name = null;
+    public com.example.demo.avro.Feedback.Builder clearDataCategory() {
+      data_category = null;
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -556,7 +556,7 @@ public class Feedback extends org.apache.avro.specific.SpecificRecordBase implem
         record.taskId = fieldSetFlags()[0] ? this.taskId : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.projectId = fieldSetFlags()[1] ? this.projectId : (java.lang.CharSequence) defaultValue(fields()[1]);
         record.scenarioId = fieldSetFlags()[2] ? this.scenarioId : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.system_name = fieldSetFlags()[3] ? this.system_name : (java.lang.CharSequence) defaultValue(fields()[3]);
+        record.data_category = fieldSetFlags()[3] ? this.data_category : (java.lang.CharSequence) defaultValue(fields()[3]);
         record.return_value = fieldSetFlags()[4] ? this.return_value : (java.lang.CharSequence) defaultValue(fields()[4]);
         record.return_time = fieldSetFlags()[5] ? this.return_time : (java.lang.Long) defaultValue(fields()[5]);
         return record;

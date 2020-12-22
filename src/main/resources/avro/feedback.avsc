@@ -16,7 +16,7 @@
             "type":"string"
         },
         {
-            "name":"system_name",
+            "name":"data_category",
             "type":"string"
         },
         {

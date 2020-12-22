@@ -1,13 +1,17 @@
 package com.example.demo.user.controller;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.example.demo.common.Result;
 import com.example.demo.user.config.ApplicationObj;
 import com.example.demo.user.entity.User;
 import com.example.demo.user.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/demo")
 public class DemoController {
@@ -57,6 +61,29 @@ public class DemoController {
             e.printStackTrace();
         }
 
+        return Result.init();
+    }
+    @GetMapping("/log")
+    public Result log(@RequestParam String name, @RequestParam String sex){
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject2 = new JSONObject();
+        jsonObject2.set("name", name);
+        jsonObject2.set("sex", sex);
+        jsonObject.set("indexName", "xcp-test-3");
+        jsonObject.set("data", jsonObject2);
+        log.info(JSONUtil.toJsonStr(jsonObject));
+        return Result.init();
+    }
+
+    @PostMapping("/log2")
+    public Result log2(@RequestBody JSONObject jsonObject){
+        log.info(JSONUtil.toJsonStr(jsonObject));
+        return Result.init();
+    }
+
+    @PostMapping("/log3")
+    public Result log3(){
+        log.info("{\"data\":{\"body\":\"{\\\"name\\\":\\\"3333333333\\\",\\\"description\\\":\\\"\\\",\\\"quotaTypeId\\\":\\\"2\\\",\\\"trainId\\\":0}\",\"ip\":\"172.18.0.92\",\"type\":1,\"uri\":\"/project/import/async\",\"userCompany\":\"abcdefghijklmnopqrstuvwxyz\",\"userKey\":\"bcfd224770a14554a8df53a69ba31c99\",\"userRole\":\"leader\",\"userType\":\"designer\"},\"indexName\":\"gateway-log\"}");
         return Result.init();
     }
 

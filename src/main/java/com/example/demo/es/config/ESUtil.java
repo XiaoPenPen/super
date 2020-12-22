@@ -20,7 +20,10 @@ import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +33,8 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xuchunpeng 2020/9/14
@@ -178,6 +183,46 @@ public class ESUtil {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * 根据条件查询数据
+     *
+     * @param index         索引
+     * @param startPage     开始页
+     * @param pageSize      每页条数
+     * @param sourceBuilder 查询返回条件
+     * @param queryBuilder  查询条件
+     */
+    public static List<Map<String, Object>> SearchDataPage(String index, int startPage, int pageSize,
+                                                           SearchSourceBuilder sourceBuilder, QueryBuilder queryBuilder) {
+        SearchRequest request = new SearchRequest(index);
+        //设置超时时间
+        sourceBuilder.timeout(new TimeValue(120, TimeUnit.SECONDS));
+        //设置是否按匹配度排序
+        sourceBuilder.explain(true);
+        //加载查询条件
+        sourceBuilder.query(queryBuilder);
+        //设置分页
+        sourceBuilder.from((startPage - 1) * pageSize).size(pageSize);
+        log.info("查询返回条件：" + sourceBuilder.toString());
+        request.source(sourceBuilder);
+        try {
+            SearchResponse searchResponse = client.search(request, RequestOptions.DEFAULT);
+            long totalHits = searchResponse.getHits().getTotalHits().value;
+            log.info("共查出{}条记录", totalHits);
+            RestStatus status = searchResponse.status();
+            if (status.getStatus() == 200) {
+                List<Map<String, Object>> sourceList = new ArrayList<>();
+                for (SearchHit searchHit : searchResponse.getHits().getHits()) {
+                    Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
+                    sourceList.add(sourceAsMap);
+                }
+                return sourceList;
+            }
+        } catch (IOException e) {
+            log.error("条件查询索引{}时出错", index);
+            log.error(e.getMessage(), e);
+        }
+        return null;
+    }
 
 }

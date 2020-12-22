@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * @author xuchunpeng 2020/5/13
@@ -41,6 +42,11 @@ public class SnortTest11Producer {
 
     @Value("${DetectionTask.applyTokenIn.port}")
     private Integer port;
+
+    //@Scheduled(cron = "*/2 * * * * ?")
+    public void qadsadawa2() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        kafkaTwoTemplate.send("zs_test2020123", "123");
+    }
 
    // @Scheduled(cron = "*/2 * * * * ?")
     public void qadsadawa() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
@@ -265,6 +271,14 @@ public class SnortTest11Producer {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        String content="/topo/12345676";
+        String pattern=".*/topo/.*/.*";
+        boolean isMatch= Pattern.matches(pattern, content);
+        System.out.println(isMatch);
+        System.out.println(content.substring(content.indexOf("/", 1)));
     }
 
 }

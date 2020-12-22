@@ -62,10 +62,34 @@ public class AvroConfig {
         return factory;
     }
 
+    @Bean
+    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory2());
+        factory.setConcurrency(3);
+        factory.getContainerProperties().setPollTimeout(3000);
+        return factory;
+    }
+
+    public ConsumerFactory<String, Object> consumerFactory2() {
+        return new DefaultKafkaConsumerFactory(consumerConfigs2(), new StringDeserializer(),
+                new AvroDeserializer(Object.class));
+    }
+
     public ConsumerFactory<String, Feedback> consumerFactory() {
         return new DefaultKafkaConsumerFactory(consumerConfigs(), new StringDeserializer(),
                 new AvroDeserializer<>(Feedback.class));
     }
+    private Map<String, Object> consumerConfigs2() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, enableAutoCommit);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        return props;
+    }
+
 
     private Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();

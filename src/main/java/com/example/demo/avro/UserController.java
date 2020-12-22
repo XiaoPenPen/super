@@ -1,13 +1,13 @@
 package com.example.demo.avro;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.example.demo.common.Result;
 import com.google.common.collect.ImmutableMap;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -15,6 +15,7 @@ import java.util.Arrays;
 /**
  * @author xuchunpeng 2020/10/27
  */
+@Slf4j
 @RestController
 @RequestMapping("avro")
 public class UserController {
@@ -22,14 +23,26 @@ public class UserController {
     @Resource(name = "avroKafkaTemplate")
     private KafkaTemplate<String, Feedback> kafkaTemplate;
 
-    @GetMapping("test")
-    public Result test(){
-/*        User user = new User();
-        user.setAge(22);
-        user.setName("XCP2");
-        user.setAddress("海淀");
-        kafkaTemplate.send("test_avro", user);*/
-        return Result.init();
+    @Resource
+    private KafkaTemplate kafkaOneTemplate;
+
+    @PostMapping("feedback")
+    public Result feedback(@RequestParam String category, @RequestBody JSONObject jsonObject){
+        Feedback feedback = new Feedback();
+        feedback.setProjectId("6fdb1ad085524822ac3528f55fb23d39");
+        feedback.setDataCategory(category);
+        feedback.setReturnTime(DateUtil.currentSeconds());
+        feedback.setTaskId("6fdb1ad085524822ac3528f55fb23d39");
+        feedback.setScenarioId("6fdb1ad085524822ac3528f55fb23d39");
+        feedback.setReturnValue(JSONUtil.toJsonStr(jsonObject));
+        kafkaTemplate.send("topic_feedback_json1", feedback);
+        return Result.init(JSONUtil.toJsonStr(jsonObject));
+    }
+
+    @PostMapping("attack")
+    public Result attack(@RequestBody JSONObject jsonObject){
+        kafkaOneTemplate.send("attack_syslog", JSONUtil.toJsonStr(jsonObject));
+        return Result.init(JSONUtil.toJsonStr(jsonObject));
     }
 
     @GetMapping("test2")
@@ -58,11 +71,66 @@ public class UserController {
     @GetMapping("test3")
     public Result test3(){
         Feedback feedback = new Feedback();
-        feedback.setProjectId("qqqqqq");
-        feedback.setReturnTime(1231231231L);
-        feedback.setReturnValue("这是一条测试");
+        feedback.setProjectId("82b7e280b01f40f584dd1a82dc3e392f");
+        feedback.setReturnTime(DateUtil.currentSeconds());
+        feedback.setReturnValue("{" +
+                "\"taskid\":\"82b7e280b01f40f584dd1a82dc3e392f\", " +
+                "\"content_type\":\"abstract\"," +
+                "\"log_time\": \"2020-10-29 13:50:00\"," +
+                "    \"event_num\":[ " +
+                "        {" +
+                "            \"event_time\":\"2020-10-29 13:50:00\"," +
+                "            \" event _num\":123 " +
+                "        }," +
+                "        {" +
+                "            \"event_time\":\"2020-10-29 13:50:00\"," +
+                "            \" event _num\":123 " +
+                "        }" +
+                "    ]," +
+                "    \"attacker\":[" +
+                "        {" +
+                "            \"ipmac\":\"172.16.18.1&00-01-6C-06-A6-29\", " +
+                "            \"nums\":123" +
+                "        }," +
+                "        {" +
+                "            \"ipmac\":\"172.16.18.1&00-01-6C-06-A6-29\"," +
+                "            \"nums\":123" +
+                "        }" +
+                "    ]," +
+                "    \"victim\":[" +
+                "        {" +
+                "            \"ipmac\":\"172.16.18.1&00-01-6C-06-A6-29\"," +
+                "            \"nums\":123" +
+                "        }," +
+                "        {" +
+                "            \"ipmac\":\"172.16.18.1&00-01-6C-06-A6-29\"," +
+                "            \"nums\":123" +
+                "        }" +
+                "]," +
+                "\"event_type_num\":[" +
+                "        {" +
+                "            \"event_type\":\"1\"," +
+                "            \"nums\":123" +
+                "        }," +
+                "        {" +
+                "            \"event_type\":\"2\"," +
+                "            \"nums\":123" +
+                "        }," +
+                "        {" +
+                "            \"event_type\":\"3\"," +
+                "            \"nums\":123" +
+                "        }," +
+                "        {" +
+                "            \"event_type\":\"4\"," +
+                "            \"nums\":123" +
+                "        }," +
+                "        {" +
+                "            \"event_type\":\"5\"," +
+                "            \"nums\":123" +
+                "        }" +
+                "    ]" +
+                "}");
         feedback.setScenarioId("ssssssss");
-        feedback.setSystemName("ZHFX");
         feedback.setTaskId("tttttttt");
         kafkaTemplate.send("test_avro", feedback);
         return Result.init();
