@@ -24,7 +24,7 @@
 		<mysql.version>8.0.16</mysql.version>
 		<generator.version>3.3.0</generator.version>
 		<jsoup.version>1.12.1</jsoup.version>
-		<es.version>7.2.0</es.version>
+		<es.version>7.11.2</es.version>
 	</properties>
 
 	<dependencies>
