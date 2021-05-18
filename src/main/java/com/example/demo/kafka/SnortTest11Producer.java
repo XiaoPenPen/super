@@ -1,8 +1,11 @@
 package com.example.demo.kafka;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.example.demo.redis.RedisUtil;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -12,11 +15,13 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -26,6 +31,8 @@ import java.util.regex.Pattern;
 @PropertySource({"classpath:properties/detection-task.properties"})
 public class SnortTest11Producer {
 
+    public static final String INTERVAL = "interval";
+    public static final String SCREEN_CONTROL_CITY_EMERGENCY_CONVERT = "screen_control_city_emergency_convert";
     @Autowired
     private KafkaTemplate kafkaOneTemplate;
     @Autowired
@@ -36,6 +43,13 @@ public class SnortTest11Producer {
     private Environment environment;
     @Value("${server.tomcat.uri-encoding}")
     private String value;
+
+    private static String name;
+    @Value("${test.name}")
+    public void setName(String name) {
+        SnortTest11Producer.name = name;
+    }
+
     public static List<String> userMap = Arrays.asList("xcp-test-o1", "wsd-test-01");
     public static List<String> targetNameMap = Arrays.asList("xcp-test-o1", "wsd-test-01");
     public static List<String> teamMap = Arrays.asList("xcp-test-o1", "wsd-test-01");
@@ -43,16 +57,62 @@ public class SnortTest11Producer {
     @Value("${DetectionTask.applyTokenIn.port}")
     private Integer port;
 
-    //@Scheduled(cron = "*/2 * * * * ?")
-    public void qadsadawa2() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        kafkaTwoTemplate.send("zs_test2020123", "123");
+    //@Scheduled(cron = "*/20 * * * * ?")
+    public void attack_success_event() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        String str = "{\"projectId\":\"728a12a1cc4d4c6b8e1df44e72e1d7b1\",\"attackType\":\"signal_lamp\", \"attackStatus\":true}";
+        kafkaTwoTemplate.send("TRIGGER_DYNAMIC_SHOW", str);
     }
 
    // @Scheduled(cron = "*/2 * * * * ?")
+    public void  testRedis() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+//        JSONObject jsonObject = new JSONObject().set("name", JSONNull.NULL).set("id", "1");
+//        redisUtil.hset("test_key2", "123",jsonObject);
+        // 水务(自来水厂)攻击
+        redisUtil.hset(SCREEN_CONTROL_CITY_EMERGENCY_CONVERT , "waterworks",
+                JSONUtil.toJsonStr(ImmutableMap.of(
+                        "name","waterworks",
+                        "list", Arrays.asList(ImmutableMap.of(INTERVAL, 0, "data", "[\"locateCityAnchor\",{\"name\":\"Water plant\",\"cameraZ\": 103,\"cameraY\": 261, \"cameraX\": 1236, \"targetX\":179, \"targetY\":-22 ,\"targetZ\": 120}]"),
+                                ImmutableMap.of(INTERVAL, 3000, "data", "[\"addRectEmp\",{\"name\":\"Rect-01\",\"x\": 800, \"y\":15,\"z\": 120, \"color\": \"#ff0000\", \"width\": 250, \"height\": 3, \"distance\": 15, \"level\": 3}]"),
+                                ImmutableMap.of(INTERVAL, 0, "data", "[\"removeRectEmp\", {\"name\":\"Rect-01\"}]"),
+
+                                ImmutableMap.of(INTERVAL, 2000, "data", "[\"changeMatColor\",{\"name\":\"www\",\"color\":\"#3DA558\"}]"),
+                                ImmutableMap.of(INTERVAL, 0, "data", "[\"camera_Reset\",{}]"),
+                                ImmutableMap.of(INTERVAL, 0, "data", "[\"changeMatColor\",{\"name\":\"www\",\"color\":\"#3C9CAE\"}]")
+                        ))));
+    }
+
+    //@Scheduled(cron = "*/1 * * * * ?")
+    public void real_time_attack_event() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+//        String str = "{\n" +
+//                "    \"script_name\": \"测试实时攻击\",\n" +
+//                "    \"step_name\":\"测试测试\",\n" +
+//                "    \"step_num\":0,\n" +
+//                "    \"script_category\": \"攻击种类\",\n" +
+//                "    \"script_family\": \"攻击所属\",\n" +
+//                "    \"src_ip\": \"10.218.0.1\",\n" +
+//                "    \"src_mac\": \"fa:16:3e:90:77:86\",\n" +
+//                "    \"dst_ip\": \"10.219.5.2\",\n" +
+//                "    \"dst_mac\": \"fa:16:3e:92:19:86\",\n" +
+//                "    \"time\": \"" + DateUtil.now() +"\"\n" +
+//                "}";
+                    String str = "{\n" +
+                    "    \"script_name\": \"成功攻击5\",\n" +
+                    "    \"step_name\":\"66666\",\n" +
+                    "    \"step_num\":2,\n" +
+                    "    \"script_category\": \"测试\",\n" +
+                    "    \"script_family\": \"测试测试\",\n" +
+                    "    \"src_ip\": \"192.168.6.3\",\n" +
+                    "    \"src_mac\": \"1.1.1.1\",\n" +
+                    "    \"dst_ip\": \"192.168.6.1\",\n" +
+                    "    \"dst_mac\": \"fa:16:3e:06:5b:2b\",\n" +
+                    "    \"time\": \"" + DateUtil.now() +"\"\n" +
+                    "}";
+        kafkaTwoTemplate.send("attack_success_event", str);
+    }
+
+    //@Scheduled(cron = "*/2 * * * * ?")
     public void qadsadawa() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        System.out.println("进入时间"+DateUtil.now());
-        String test = (String) redisUtil.leftPop("test_1");
-        System.out.println(test+DateUtil.now());
+        File file = FileUtil.file("e://data/1.txt");
     }
 
     //@Scheduled(cron = "*/5 * * * * ?")
@@ -274,11 +334,20 @@ public class SnortTest11Producer {
     }
 
     public static void main(String[] args) {
-        String content="/topo/12345676";
-        String pattern=".*/topo/.*/.*";
+        String content="/topo/12345676/awqse";
+        String pattern=".*/topo/.*";
         boolean isMatch= Pattern.matches(pattern, content);
         System.out.println(isMatch);
         System.out.println(content.substring(content.indexOf("/", 1)));
+
+        String str = "(  ( GLDWH = '14000' )  )";
+
+        Pattern pattern2 = Pattern.compile("([\'\"])(.*?)\\1");
+        Matcher matcher = pattern2.matcher(str );
+        if (matcher.find()) {
+            String collegeId = matcher.group(2);
+            System.out.println(collegeId);//14000
+        }
     }
 
 }

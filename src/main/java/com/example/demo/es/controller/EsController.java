@@ -1,5 +1,7 @@
 package com.example.demo.es.controller;
 
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.example.demo.es.config.ESUtil;
@@ -13,9 +15,9 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Api(tags = "ES 7.2.0")
@@ -68,9 +70,44 @@ public class EsController {
         return R.ok(list);
     }
 
-    public static void main(String[] args) {
-        System.out.println(DateUtil.parseUTC("2020-12-17T10:56:59.319Z").getTime());
+    @ApiOperation("分页查询")
+    @GetMapping("/search/page/user")
+    public R searchPageByUser(@RequestParam String indexName, String match, String val,
+                              @RequestParam Integer startPage,
+                              @RequestParam Integer pageSize) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        String[] fields = {"json", "project", "indexName", "_id", "@timestamp", "dataType", "userCompany", "userKey", "userRole", "userType", "methodValue"};
+        //需要返回和不返回的字段，可以是数组也可以是字符串
+        sourceBuilder.fetchSource(fields, null);
+        //设置根据哪个字段进行排序查询
+        sourceBuilder.sort(new FieldSortBuilder("@timestamp").order(SortOrder.DESC));
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+        //添加查询条件
+        builder.must(QueryBuilders.matchQuery(match, val));
+        list = ESUtil.SearchDataPage(indexName, startPage, pageSize, sourceBuilder, builder);
+        return R.ok(list);
     }
 
+    public static Boolean isBefore(String startTime, String endTime, DateUnit dateUnit){
+        return  cn.hutool.core.date.DateUtil.between(cn.hutool.core.date.DateUtil.parse(startTime), cn.hutool.core.date.DateUtil.parse(endTime), dateUnit, false) >= 0;
+    }
 
+    public static void main(String[] args) throws ParseException {
+        String str="2020-01-02 07:59:59";
+        String str2="2020-01-09 07:59:59";
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date =sdf.parse(str);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int zoneOffset = calendar.get(Calendar.ZONE_OFFSET);
+        int dstOffset = calendar.get(Calendar.DST_OFFSET);
+        calendar.add(Calendar.MILLISECOND, -(zoneOffset + dstOffset));
+        long timeInMillis = calendar.getTimeInMillis();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+        cn.hutool.core.date.DateUtil.rangeToList(DateUtil.parse(str2, "yyyy-MM-dd"), DateUtil.parse(str, "yyyy-MM-dd"), DateField.DAY_OF_MONTH).forEach(System.out::println);
+
+        System.out.println(isBefore(str,str2,DateUnit.DAY));
+    }
 }
