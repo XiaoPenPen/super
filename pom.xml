@@ -21,7 +21,7 @@
 		<mybatis.plus.starter.version>3.1.2</mybatis.plus.starter.version>
 		<mybatis.plus.version>3.3.0</mybatis.plus.version>
 		<mybatis.plus.annotation.version>RELEASE</mybatis.plus.annotation.version>
-		<mysql.version>8.0.16</mysql.version>
+		<mysql.version>8.0.28</mysql.version>
 		<generator.version>3.3.0</generator.version>
 		<jsoup.version>1.12.1</jsoup.version>
 		<es.version>7.2.0</es.version>
